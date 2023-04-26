@@ -9,6 +9,7 @@ class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
   static const primaryColor = const Color(0xff101C2B);
   static const borderColor = const Color(0xff896F4E);
+  static const bgColor = const Color(0xff293441);
   @override
   State<Login> createState() => _LoginState();
 }
@@ -21,6 +22,7 @@ class _LoginState extends State<Login> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Login.bgColor,
       body: Column(
         children: [
           Container(
@@ -168,6 +170,7 @@ class LoginForm extends StatelessWidget {
           SizedBox(
             height: screenWidth < 700 ? 35 : 45,
             child: TextField(
+              obscureText: true,
               cursorColor: Login.borderColor,
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
