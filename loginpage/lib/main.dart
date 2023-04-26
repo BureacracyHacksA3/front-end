@@ -22,6 +22,7 @@ class _LoginState extends State<Login> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Login.bgColor,
       body: Column(
         children: [
