@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:footer/footer.dart';
-
-//to do: logo-ul sa trimita la aceeasi pagina, navbar-ul sa fie responsiv
-//la ecran mic -> meniu hamburger
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
