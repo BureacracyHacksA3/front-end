@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import './institution.dart';
-import './searchBarContainer.dart';
-import './InsitutionMobile.dart';
+import './institution_mobile.dart';
+import './institution_desktop.dart';
+import 'institution.dart';
+import 'institution_service.dart';
 
 class Body extends StatelessWidget {
   @override
@@ -10,16 +11,14 @@ class Body extends StatelessWidget {
       // Return SearchBarContainer() pentru telefoane
       return Column(
         children: <Widget>[
-          SearchBarContainer(),
           InstitutionMobile(),
         ],
       );
     } else {
       // Return Institution() pentru desktop
-      return Column(
+       return Column(
         children: <Widget>[
-          SearchBarContainer(),
-          Institution(),
+          InstitutionDesktop(),
         ],
       );
     }

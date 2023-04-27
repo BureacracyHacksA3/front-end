@@ -1,66 +1,73 @@
 import 'package:flutter/material.dart';
 import './body.dart';
-import './buttomNavigationBar.dart';
-import './searchBarContainer.dart';
-import './institution.dart';
+import 'bottom_navigation_bar.dart';
+import 'package:adaptive_navbar/adaptive_navbar.dart';
 
-void main() => runApp(const AppBarApp());
+void main() => runApp(const MyApp());
 
-class AppBarApp extends StatelessWidget {
-  const AppBarApp({super.key});
-
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: AppBarExample(),
+      home: Home(),
     );
   }
 }
 
-class AppBarExample extends StatelessWidget {
-  const AppBarExample({super.key});
+class Home extends StatefulWidget {
+  const Home({super.key});
+  @override
+  State<Home> createState() => _HomeState();
+}
 
+class _HomeState extends State<Home>{
   @override
   Widget build(BuildContext context) {
+    final sw = MediaQuery.of(context).size.width;
     final ButtonStyle style = TextButton.styleFrom(
       foregroundColor: Theme.of(context).colorScheme.onPrimary,
     );
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Color(0xFF101C2B),
+      appBar: AdaptiveNavBar(
+        screenWidth: sw,
+        backgroundColor: const Color(0xFF101C2B),
         leading: Image.asset(
           'images/logo-ip.png',
           width: 50,
           height: 50,
         ),
-        actions: <Widget>[
-          TextButton(
-            style: style,
-            onPressed: () {},
-            child: const Text('Home'),
+        navBarItems: [
+          NavBarItem(
+            text: "Home",
+            onTap: () {
+              Navigator.pushNamed(context, "routeName");
+            },
           ),
-          TextButton(
-            style: style,
-            onPressed: () {},
-            child: const Text('Institution'),
+          NavBarItem(
+            text: "Institution",
+            onTap: () {
+              Navigator.pushNamed(context, "routeName");
+            },
           ),
-          TextButton(
-            style: style,
-            onPressed: () {},
-            child: const Text('Contact'),
+          NavBarItem(
+            text: "Contact",
+            onTap: () {
+              Navigator.pushNamed(context, "routeName");
+            },
           ),
-          TextButton(
-            style: style,
-            onPressed: () {},
-            child: const Text('My Acount'),
+          NavBarItem(
+            text: "My account",
+            onTap: () {
+              Navigator.pushNamed(context, "routeName");
+            },
           ),
         ],
       ),
-      body: ListView(children: [
+      body: SingleChildScrollView(child: 
         Body(),
-      ]),
-      bottomNavigationBar: ButtomNavigationBar(),
+      ),
+      bottomNavigationBar: const ButtomNavigationBar(),
     );
   }
 }
