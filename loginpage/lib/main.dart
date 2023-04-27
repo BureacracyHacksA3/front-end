@@ -115,6 +115,8 @@ class LoginForm extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              Icon(Icons.email, color: Colors.white, size: screenWidth < 700 ? 15 : 22,),
+              SizedBox(width: 5,),
               Text(
                 'Email: ',
                 style: TextStyle(
@@ -158,6 +160,8 @@ class LoginForm extends StatelessWidget {
           SizedBox(height: screenWidth < 700 ? 15.0 : 20.0,),
           Row(
             children: [
+              Icon(Icons.vpn_key, color: Colors.white, size: screenWidth < 700 ? 15 : 22,),
+              SizedBox(width: 5,),
               Text(
                 'Parola: ',
                 style: TextStyle(
