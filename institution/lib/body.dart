@@ -7,7 +7,7 @@ import 'institution_service.dart';
 class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    if (MediaQuery.of(context).size.width < 790) {
+    if (MediaQuery.of(context).size.width < 810) {
       // Return SearchBarContainer() pentru telefoane
       return Column(
         children: <Widget>[
