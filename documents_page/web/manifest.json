@@ -1,6 +1,6 @@
 {
-    "name": "bureaucracy",
-    "short_name": "bureaucracy",
+    "name": "doc_page",
+    "short_name": "doc_page",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

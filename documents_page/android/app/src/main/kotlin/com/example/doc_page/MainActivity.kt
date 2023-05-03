@@ -1,4 +1,4 @@
-package com.example.bureaucracy
+package com.example.doc_page
 
 import io.flutter.embedding.android.FlutterActivity
 

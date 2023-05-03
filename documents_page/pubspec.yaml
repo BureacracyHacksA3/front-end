@@ -1,4 +1,4 @@
-name: bureaucracy
+name: doc_page
 description: A new Flutter project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -35,6 +35,8 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  adaptive_navbar: ^0.0.3
+  http: ^0.13.6
 
 dev_dependencies:
   flutter_test:
@@ -60,9 +62,10 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/logo-ip.png
-    - assets/images/schema.png
-    - assets/images/orase.png
+  - images/logo-ip.png
+  - images/schema.png
+  - images/orase.png
+  - images/primaria.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

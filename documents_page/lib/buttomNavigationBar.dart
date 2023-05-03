@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class bottomNavigationBar extends StatelessWidget {
-  const bottomNavigationBar({super.key});
+class ButtomNavigationBar extends StatelessWidget {
+  const ButtomNavigationBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +16,7 @@ class bottomNavigationBar extends StatelessWidget {
         ),
         color: Color(0xFF101C2B),
       ),
-      child:
-      Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: const [
           Padding(
