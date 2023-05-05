@@ -87,6 +87,9 @@ class LoginForm extends StatelessWidget {
 
     final screenWidth = MediaQuery.of(context).size.width;
 
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
+
     return Container(
       height: screenWidth < 700 ? 420.0 : 550.0,
       width: screenWidth < 700 ? 320.0 : 450.0,
@@ -131,6 +134,7 @@ class LoginForm extends StatelessWidget {
             height: screenWidth < 700 ? 35 : 45,
             child: TextField(
               cursorColor: Login.borderColor,
+              controller: emailController,
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
@@ -176,6 +180,7 @@ class LoginForm extends StatelessWidget {
             height: screenWidth < 700 ? 35 : 45,
             child: TextField(
               obscureText: true,
+              controller: passwordController,
               cursorColor: Login.borderColor,
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
