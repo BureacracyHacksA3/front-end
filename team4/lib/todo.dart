@@ -233,7 +233,7 @@ class _MyMapState extends State<MyMap> {
             myLocationButtonEnabled: true,
             initialCameraPosition: maps.CameraPosition(
               target: locations[0],
-              zoom: 15.0,
+              zoom: 13.5,
             ),
             markers: locations
                 .map(
