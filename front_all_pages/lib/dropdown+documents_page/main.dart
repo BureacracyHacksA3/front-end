@@ -31,7 +31,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String? _selectedOption;
   final TasksService _tasksService = TasksService();
-  late List<String> _options =[];
+  late List<String> _options = [];
 
   @override
   void initState() {
@@ -149,6 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class MyOtherPage extends StatefulWidget {
   final String selectedOption;
+
   //const MyOtherPage({Key? key}) : super(key: key);
   const MyOtherPage({Key? key, required this.selectedOption}) : super(key: key);
 
@@ -158,7 +159,7 @@ class MyOtherPage extends StatefulWidget {
 
 class _MyOtherPageState extends State<MyOtherPage> {
   final DocumentApi _documentApi = DocumentApi();
-  late List<Document>? _documents =[];
+  late List<Document>? _documents = [];
 
   @override
   void initState() {
@@ -221,16 +222,18 @@ class _MyOtherPageState extends State<MyOtherPage> {
             children: <Widget>[
               Container(
                 padding: EdgeInsets.all(16.0),
-              child: Text(
-                'Acte necesare pentru eliberare ${widget.selectedOption}',
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                    fontFamily: "Inria Serif",
-                    fontSize: 30,
-                    color: Colors.white),
+                child: Text(
+                  'Acte necesare pentru eliberare ${widget.selectedOption}',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      fontFamily: "Inria Serif",
+                      fontSize: 30,
+                      color: Colors.white),
+                ),
               ),
-              ),
-              Container(
+              Padding(
+                padding: EdgeInsets.all(20),
+              child: Container(
                 padding: EdgeInsets.all(20.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(40),
@@ -245,8 +248,9 @@ class _MyOtherPageState extends State<MyOtherPage> {
                       children: List.generate(
                         _documents?.length ?? 0,
                         (index) => Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0), //+
-                           //EdgeInsets.only(left: 8.0),
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          //+
+                          //EdgeInsets.only(left: 8.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -267,14 +271,56 @@ class _MyOtherPageState extends State<MyOtherPage> {
                                   color: Colors.white,
                                 ),
                               ),
+                              Text(
+                                'Link: ${_documents?[index].path}',
+                                style: const TextStyle(
+                                  fontFamily: 'Inria Serif',
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                ),
+                              ),
                             ],
                           ),
                         ),
                       ),
                     ),
                     Image.asset('images/schema.png'),
+                    Padding(
+                      padding: EdgeInsets.only(top: 20),
+                      // Set padding from content above
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Button action goes here
+                        },
+                        child: Text('Incepe operatiunea',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                            )),
+                        style: ButtonStyle(
+                          // Customize background color
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Color(0xff293441)),
+
+                          // Customize button padding
+                          padding: MaterialStateProperty.all<EdgeInsets>(
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                          ),
+
+                          // Customize border
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: BorderSide(color: Color(0xFF101C2B)),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
+              ),
               ),
               Image.asset('images/orase.png'),
             ],
