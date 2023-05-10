@@ -30,6 +30,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  image_picker: ^0.8.4
+  path_provider: ^2.0.6
+  path: ^1.8.1
+  permission_handler: ^9.0.1
   responsive_builder:
 
 

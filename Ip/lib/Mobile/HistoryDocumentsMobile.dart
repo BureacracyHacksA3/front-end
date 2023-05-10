@@ -48,7 +48,7 @@ class _HistoryDocumentsState extends State<HistoryDocuments> {
         "institution_id": 682,
         "path": "https://gov.ro/fisiere/programe_fisiere/26-05_Guvernul_Nicolae-Ionel_Ciuca_-_Bilant_la_6_luni_de_guvernare.pdf"
       },
-      "statusCode": "OK",
+      "statusCode": "DONE",
       "statusCodeValue": 200,
     },
     {
@@ -61,7 +61,7 @@ class _HistoryDocumentsState extends State<HistoryDocuments> {
         "institution_id": 89,
         "path": "https://gov.ro/fisiere/programe_fisiere/Raport_final_strategie_mai_2022.pdf"
       },
-      "statusCode": "ERROR",
+      "statusCode": "DONE",
       "statusCodeValue": 200,
     },
     {
@@ -74,7 +74,7 @@ class _HistoryDocumentsState extends State<HistoryDocuments> {
         "institution_id": 151,
         "path": "https://gov.ro/fisiere/programe_fisiere/Program_de_Guvernare_2021%E2%80%942024.pdf"
       },
-      "statusCode": "INPROGRESS",
+      "statusCode": "IN PROGRESS",
       "statusCodeValue": 200,
     }
   ];
@@ -157,7 +157,7 @@ class _HistoryDocumentsState extends State<HistoryDocuments> {
                                             Container(
                                               child:Column(
                                                 children: <Widget>[
-                                                  if(documents[i].getStatus().toString() == 'OK')
+                                                  if(documents[i].getStatus().toString() == 'DONE')
                                                     Text(
                                                       'Status: ' + documents[i].getStatus().toString(),
                                                       style: TextStyle(
@@ -166,16 +166,8 @@ class _HistoryDocumentsState extends State<HistoryDocuments> {
                                                         fontSize: 15,
                                                       ),
                                                     ),
-                                                  if(documents[i].getStatus().toString() == 'ERROR')
-                                                      Text(
-                                                        'Status: ' + documents[i].getStatus().toString(),
-                                                        style: TextStyle(
-                                                          fontFamily: 'Louis George Cafe',
-                                                          color: Colors.red,
-                                                          fontSize: 15,
-                                                        ),
-                                                      ),
-                                                  if(documents[i].getStatus().toString() == 'INPROGRESS')
+
+                                                  if(documents[i].getStatus().toString() == 'IN PROGRESS')
                                                     Text(
                                                       'Status: ' + documents[i].getStatus().toString(),
                                                       style: TextStyle(

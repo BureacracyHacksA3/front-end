@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ipApp/Mobile/HistoryDocumentsMobile.dart';
 import 'package:ipApp/Mobile/ProfilePageMobile.dart';
+import 'package:ipApp/Mobile/DocumentsPageMobile.dart';
 
 class AccountPageMobile extends StatefulWidget {
   const AccountPageMobile({Key? key}) : super(key: key);
@@ -198,27 +199,33 @@ class _AccountPageMobileState extends State<AccountPageMobile> {
                                 ),
                               ),
                             ),
-                            child: Row(
-                              children: <Widget>[
-                                Container(
-                                  padding: EdgeInsets.only(top: 20, left: 10),
-                                  child: Image.asset(
-                                    'assets/images/document_in_decurs.png',
-                                    width: 70,
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.only(top: 15, left: 0),
-                                  child: Text(
-                                    'Documents',
-                                    style: TextStyle(
-                                      color: Color(0xFFe5e7e8),
-                                      fontFamily: 'Louis George Cafe',
-                                      fontSize: 30,
+                            child: GestureDetector(
+                              onTap: () =>
+                                  Navigator.of(context).push(new MaterialPageRoute(
+                                      builder: (BuildContext context) => new MyDocuments())),
+
+                              child: Row(
+                                children: <Widget>[
+                                  Container(
+                                    padding: EdgeInsets.only(top: 20, left: 10),
+                                    child: Image.asset(
+                                      'assets/images/document_in_decurs.png',
+                                      width: 70,
                                     ),
                                   ),
-                                ),
-                              ],
+                                  Container(
+                                    padding: EdgeInsets.only(top: 15, left: 0),
+                                    child: Text(
+                                      'Documents',
+                                      style: TextStyle(
+                                        color: Color(0xFFe5e7e8),
+                                        fontFamily: 'Louis George Cafe',
+                                        fontSize: 30,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           Container(
