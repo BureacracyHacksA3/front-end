@@ -76,15 +76,22 @@ class MyApp extends StatelessWidget {
             width: double.infinity,
             height: double.infinity,
             child: Container(
-              margin: const EdgeInsets.only(bottom: 30.0),
-              child: const Wrap(
-                alignment: WrapAlignment.spaceAround,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                runAlignment: WrapAlignment.center,
-                children: [
-                  MyMap(),
-                  ToDoList(),
-                ],
+              margin: const EdgeInsets.only(bottom: 40.0),
+              child: Center(
+                child: Container(
+                  width: double.infinity,
+                  child: const SingleChildScrollView(
+                    child: Wrap(
+                      alignment: WrapAlignment.spaceAround,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      runAlignment: WrapAlignment.center,
+                      children: [
+                        MyMap(),
+                        ToDoList(),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
@@ -157,7 +164,7 @@ class _MyMapState extends State<MyMap> {
               onMapCreated: _onMapCreated,
               initialCameraPosition: CameraPosition(
                 target: _center,
-                zoom: 11.0,
+                zoom: 13.0,
               ),
           ),
         ),
@@ -226,10 +233,7 @@ class _ToDoListState extends State<ToDoList> {
                                     fontSize: 20,
                                   ),
                                 ),
-                                Checkbox(
-                                  value: true,
-                                  onChanged: null,
-                                ),
+                                CheckboxExample(),
                               ]),
                         ),
                         Container(
@@ -251,10 +255,7 @@ class _ToDoListState extends State<ToDoList> {
                                     fontSize: 20,
                                   ),
                                 ),
-                                Checkbox(
-                                  value: true,
-                                  onChanged: null,
-                                ),
+                                CheckboxExample(),
                               ]),
                         ),
                         Container(
@@ -276,10 +277,7 @@ class _ToDoListState extends State<ToDoList> {
                                     fontSize: 20,
                                   ),
                                 ),
-                                Checkbox(
-                                  value: true,
-                                  onChanged: null,
-                                ),
+                                CheckboxExample(),
                               ]),
                         ),
                         Container(
@@ -301,10 +299,7 @@ class _ToDoListState extends State<ToDoList> {
                                     fontSize: 20,
                                   ),
                                 ),
-                                Checkbox(
-                                  value: true,
-                                  onChanged: null,
-                                ),
+                                CheckboxExample(),
                               ]),
                         ),
                         Container(
@@ -326,10 +321,7 @@ class _ToDoListState extends State<ToDoList> {
                                     fontSize: 20,
                                   ),
                                 ),
-                                Checkbox(
-                                  value: true,
-                                  onChanged: null,
-                                ),
+                                CheckboxExample(),
                               ]),
                         ),
                         Container(
@@ -351,10 +343,7 @@ class _ToDoListState extends State<ToDoList> {
                                     fontSize: 20,
                                   ),
                                 ),
-                                Checkbox(
-                                  value: true,
-                                  onChanged: null,
-                                ),
+                                CheckboxExample(),
                               ]),
                         ),
                         Container(
@@ -369,10 +358,7 @@ class _ToDoListState extends State<ToDoList> {
                                     fontSize: 20,
                                   ),
                                 ),
-                                Checkbox(
-                                  value: true,
-                                  onChanged: null,
-                                ),
+                                CheckboxExample(),
                               ]),
                         ),
                       ],
@@ -498,6 +484,43 @@ class _NavigationBarState extends State<NavigationBar> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class CheckboxExample extends StatefulWidget {
+  const CheckboxExample({super.key});
+
+  @override
+  State<CheckboxExample> createState() => _CheckboxExampleState();
+}
+
+class _CheckboxExampleState extends State<CheckboxExample> {
+  bool isChecked = false;
+
+  @override
+  Widget build(BuildContext context) {
+    Color getColor(Set<MaterialState> states) {
+      const Set<MaterialState> interactiveStates = <MaterialState>{
+        MaterialState.pressed,
+        MaterialState.hovered,
+        MaterialState.focused,
+      };
+      if (states.any(interactiveStates.contains)) {
+        return Color(0XFF101C2B);
+      }
+      return Color(0XFF101C2B);
+    }
+
+    return Checkbox(
+      checkColor: Colors.white,
+      fillColor: MaterialStateProperty.resolveWith(getColor),
+      value: isChecked,
+      onChanged: (bool? value) {
+        setState(() {
+          isChecked = value!;
+        });
+      },
     );
   }
 }
