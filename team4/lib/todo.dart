@@ -136,18 +136,45 @@ class MyMap extends StatefulWidget {
 }
 
 class _MyMapState extends State<MyMap> {
+
   late maps.GoogleMapController mapController;
+  late List<maps.LatLng> locations = [
+    maps.LatLng(47.154308, 27.589573),
+    maps.LatLng(47.157188, 27.581297),
+    maps.LatLng(47.159747, 27.584777),
+  ];
+
+  Future<void> getDirections() async {
+    final baseUrl = '.../api/directions/get-directions';
+    final waypoints = ['Iasi Palatul Culturii', 'FII'];
+    final queryParameters = {'waypoints': waypoints};
+
+    final url = Uri.parse(baseUrl).replace(queryParameters: queryParameters);
+
+    final response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+    });
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final List<dynamic> directions = data['directions'];
+
+      directions.forEach((direction) {
+        final double latitude = direction['lat'];
+        final double longitude = direction['long'];
+        locations.add(maps.LatLng(latitude, longitude));
+      });
+    } else {
+      throw Exception('Failed to get directions.');
+    }
+  }
+
 
   void _onMapCreated(maps.GoogleMapController controller) {
     mapController = controller;
   }
   locator.Location location = locator.Location();
   late maps.LatLng _currentLocation;
-  List<maps.LatLng> locations = [
-    maps.LatLng(47.154308, 27.589573),
-    maps.LatLng(47.157188, 27.581297),
-    maps.LatLng(47.159747, 27.584777),
-  ];
 
   Set<maps.Polyline> polylines = {};
 
@@ -172,6 +199,7 @@ class _MyMapState extends State<MyMap> {
         _currentLocation =
             maps.LatLng(userLocation.latitude!, userLocation.longitude!);
         locations.insert(0, _currentLocation);
+        getDirections();
         _getRoute();
       });
     } catch (e) {
