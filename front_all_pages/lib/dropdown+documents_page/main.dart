@@ -1,3 +1,9 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
+import 'package:front_all_pages/dropdown+documents_page/services/download_service.dart';
+import 'package:front_all_pages/dropdown+documents_page/services/upload_service.dart';
+
 import './models/document.dart';
 import 'services/task_service.dart';
 import 'services/documents_service.dart';
@@ -170,11 +176,37 @@ class MyOtherPage extends StatefulWidget {
 class _MyOtherPageState extends State<MyOtherPage> {
   final DocumentApi _documentApi = DocumentApi();
   late List<Document>? _documents = [];
+  final FileUploader _fileUploader = FileUploader();
+  final FileDownloader _fileDownloader = FileDownloader();
 
   @override
   void initState() {
     super.initState();
     _loadDocuments();
+  }
+
+  Future<void> _uploadFile() async {
+    try {
+      String result = await _fileUploader.uploadFile(1);
+      // Check if the response is valid JSON or an error message
+      try {
+        final jsonResponse = jsonDecode(result);
+        print('File uploaded successfully. Result: $jsonResponse');
+      } catch (e) {
+        print('Failed to upload file. Error message: $result');
+      }
+    } catch (e) {
+      print('Failed to upload file: $e');
+    }
+  }
+
+  Future<void> _downlaodFile() async {
+    try {
+      Uint8List fileBytes = await _fileDownloader.downloadFile(1);
+      // Process the downloaded file bytes as needed
+    } catch (e) {
+      // Handle any errors that occur during the file download
+    }
   }
 
   Future<void> _loadDocuments() async {
@@ -187,7 +219,8 @@ class _MyOtherPageState extends State<MyOtherPage> {
   @override
   Widget build(BuildContext context) {
     final sw = MediaQuery.of(context).size.width;
-    bool isButtonVisible=false;
+    bool isButtonVisible1 = true;
+    bool isButtonVisible2 = true;
 
     return Scaffold(
       backgroundColor: const Color(0xff293441),
@@ -281,41 +314,51 @@ class _MyOtherPageState extends State<MyOtherPage> {
                                     padding: const EdgeInsets.only(top: 10),
                                     child: Row(
                                       children: [
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            // Button 1 onPressed callback
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(40),
-                                            ),
-                                            primary: const Color(0xFF101C2B),
-                                          ),
-                                          child: const Text('Upload'),
-                                        ),
-                                        const SizedBox(width: 16), // Add some spacing between the buttons
                                         Visibility(
-                                          visible: isButtonVisible, // Set the visibility condition
+                                          visible: isButtonVisible1,
                                           maintainSize: true,
                                           maintainAnimation: true,
                                           maintainState: true,
                                           child: ElevatedButton(
                                             onPressed: () {
+                                              _downlaodFile();
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(40),
+                                              ),
+                                              primary: const Color(0xFF101C2B),
+                                            ),
+                                            child: const Text('Download'),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 16),
+                                        // Add some spacing between the buttons
+                                        Visibility(
+                                          visible: isButtonVisible2,
+                                          // Set the visibility condition
+                                          maintainSize: true,
+                                          maintainAnimation: true,
+                                          maintainState: true,
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              _uploadFile();
                                               // Button 2 onPressed callback
                                             },
                                             style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(40),
+                                                borderRadius:
+                                                    BorderRadius.circular(40),
                                               ),
                                               primary: const Color(0xFF101C2B),
                                             ),
-                                            child: Text('Button 2'),
+                                            child: const Text('Upload'),
                                           ),
                                         ),
                                       ],
                                     ),
                                   )
-
                                 ],
                               ),
                             ),
@@ -345,7 +388,8 @@ class _MyOtherPageState extends State<MyOtherPage> {
                                   RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(40),
-                                  side: const BorderSide(color: Color(0xFF101C2B)),
+                                  side: const BorderSide(
+                                      color: Color(0xFF101C2B)),
                                 ),
                               ),
                             ),
