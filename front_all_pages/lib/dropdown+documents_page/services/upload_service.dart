@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-Future<String> uploadFile() async {
-  final url = Uri.parse('http://localhost:6970/api/tasks/upload/names');
+Future<String> uploadFile(int id) async {
+  final url = Uri.parse('http://localhost:6969/api/tasks/upload/byId/$id');
 
   final response = await http.post(url);
 

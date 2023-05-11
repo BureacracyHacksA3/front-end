@@ -3,10 +3,10 @@ import 'package:http/http.dart' as http;
 import 'institution.dart';
 
 class InstitutionService {
-  final String baseUrl = 'http://localhost:8086/api';
+  final String baseUrl = 'http://localhost:6969/api/institutions';
 
   Future<Institution> getInstitutionByName(String name) async {
-    final response = await http.get(Uri.parse('$baseUrl/institutions/$name'));
+    final response = await http.get(Uri.parse('$baseUrl/$name'));
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
       print(json);
