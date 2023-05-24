@@ -1,0 +1,616 @@
+import 'package:adaptive_navbar/adaptive_navbar.dart';
+import 'package:flutter/material.dart';
+import '../../bottom_navigation_bar.dart';
+import '../../colors.dart';
+import 'package:http/http.dart' as http;
+import 'package:ipApp/Login/login.dart';
+
+import '../Contact/main.dart';
+import '../Home/landing.dart';
+import '../Institution/institutions/main.dart';
+import '../MyAccount/AccountPage.dart';
+import '../SuperAdmin/superadmin.dart';
+
+void main() {
+  runApp(const Register());
+}
+
+class Register extends StatelessWidget {
+  static var primaryColor = primaryblue;
+
+  static var borderColor = burntgold;
+
+  const Register({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Bureaucracy Hax',
+      theme: ThemeData(
+        primarySwatch: primaryblue,
+        fontFamily: 'InriaSerif',
+      ),
+      home: const MyHomePage(title: 'Register Page'),
+      routes: {
+        '/register.dart': (context) => const Register(),
+        '/login.dart': (context) => const Login(),
+      },
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+
+  final String title;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  double appBarHeight = kToolbarHeight + 3.0;
+  bool _homeAction = false;
+  bool _institutieAction = false;
+  bool _contactAction = false;
+  bool _contumeuAction = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar:AdaptiveNavBar(
+          screenWidth: MediaQuery.of(context).size.width,
+          backgroundColor: const Color(0xFF101C2B),
+          leading: Image.asset(
+            'images/logo-ip.png',
+            width: 50,
+            height: 50,
+          ),
+          navBarItems: [
+            NavBarItem(
+              text: "Home",
+              onTap: () {
+                Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new MyApp()));
+              },
+            ),
+            NavBarItem(
+              text: "Institution",
+              onTap: () {
+                Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new Home()));
+              },
+            ),
+            NavBarItem(
+              text: "Contact",
+              onTap: () {
+                Navigator.of(context)
+                    .push(new MaterialPageRoute(builder: (BuildContext context) => new AppBarExample()));
+              },
+            ),
+            if (isLogged)
+              NavBarItem(
+                text: "My account",
+                onTap: () {
+                  Navigator.of(context)
+                      .push(new MaterialPageRoute(builder: (BuildContext context) => new AccountPage()));
+                },
+              ),
+            if (!isLogged)
+              NavBarItem(
+                text: "Login",
+                onTap: () {
+                  Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new Login()));
+                },
+              ),
+            if (!isLogged)
+              NavBarItem(
+                text: "Register",
+                onTap: () {
+                  Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new Register()));
+                },
+              ),
+            if (isLogged && isAdmin)
+              NavBarItem(
+                text: "Admin Panel",
+                onTap: () {
+                  Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new SuperAdmin()));
+                },
+              ),
+          ],
+          bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(3.0),
+              child: Container(
+                height: 3.0,
+                color: burntgold.shade700,
+              ))),
+      body: Stack(
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/background_buildings.png"),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          SingleChildScrollView(
+            child: Container(
+              padding: const EdgeInsets.only(top: kToolbarHeight),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Center(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    height: MediaQuery.of(context).size.height / 1.5,
+                    padding: const EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      color: primaryblue.shade500,
+                      border: Border.all(
+                        color: burntgold.shade700,
+                        width: 3.0,
+                      ),
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    child: RegistrationPage(),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: ButtomNavigationBar(),
+    );
+  }
+}
+
+class MyButtonStyle {
+  static final ButtonStyle flatButtonStyle = TextButton.styleFrom(
+      foregroundColor: burntgold.shade200,
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24.0),
+      ),
+      textStyle: const TextStyle(
+        fontFamily: 'InriaSerif',
+        fontWeight: FontWeight.normal,
+        fontSize: 17,
+      ));
+}
+
+class RegistrationPage extends StatefulWidget {
+  @override
+  _RegistrationPageState createState() => _RegistrationPageState();
+}
+
+class _RegistrationPageState extends State<RegistrationPage> {
+  final _formKey = GlobalKey<FormState>();
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _phoneNumberController = TextEditingController();
+  final _addressController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _surnameController = TextEditingController();
+  String _feedbackText = '';
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    _emailController.dispose();
+    _phoneNumberController.dispose();
+    _addressController.dispose();
+    _nameController.dispose();
+    _surnameController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        title: const Text("Register"),
+        centerTitle: true,
+      ),
+      body: Container(
+        color: Colors.transparent,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Container(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    TextFormField(
+                      controller: _usernameController,
+                      decoration: InputDecoration(
+                          suffixIcon: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 20,
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              border: Border.all(
+                                color: burntgold.shade700,
+                                width: 3.0,
+                              ),
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: TextFormField(
+                              controller: _usernameController,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.only(bottom: 16.0, left: 10),
+                                border: InputBorder.none,
+                                hintText: 'Username',
+                                hintStyle: TextStyle(color: burntgold.shade300),
+                              ),
+                            ),
+                          ),
+                          enabledBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.transparent),
+                          ),
+                          focusedBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.transparent),
+                          ),
+                          labelText: 'Username'),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter a username';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                          suffixIcon: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 20,
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              border: Border.all(
+                                color: burntgold.shade700,
+                                width: 3.0,
+                              ),
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: TextFormField(
+                              obscureText: true,
+                              controller: _passwordController,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.only(bottom: 16.0, left: 10),
+                                border: InputBorder.none,
+                                hintText: 'Password',
+                                hintStyle: TextStyle(color: burntgold.shade300),
+                              ),
+                            ),
+                          ),
+                          enabledBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.transparent),
+                          ),
+                          focusedBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.transparent),
+                          ),
+                          labelText: 'Password'),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter a password';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                          suffixIcon: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 20,
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              border: Border.all(
+                                color: burntgold.shade700,
+                                width: 3.0,
+                              ),
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: TextFormField(
+                              controller: _emailController,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.only(bottom: 16.0, left: 10),
+                                border: InputBorder.none,
+                                hintText: 'E-mail',
+                                hintStyle: TextStyle(color: burntgold.shade300),
+                              ),
+                            ),
+                          ),
+                          enabledBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.transparent),
+                          ),
+                          focusedBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.transparent),
+                          ),
+                          labelText: 'Email'),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter an email address';
+                        }
+                        if (!value.contains('@')) {
+                          return 'Please enter a valid email address';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: _phoneNumberController,
+                      decoration: InputDecoration(
+                          suffixIcon: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 20,
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              border: Border.all(
+                                color: burntgold.shade700,
+                                width: 3.0,
+                              ),
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: TextFormField(
+                              controller: _phoneNumberController,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.only(bottom: 16.0, left: 10),
+                                border: InputBorder.none,
+                                hintText: 'Phone Number',
+                                hintStyle: TextStyle(color: burntgold.shade300),
+                              ),
+                            ),
+                          ),
+                          enabledBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.transparent),
+                          ),
+                          focusedBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.transparent),
+                          ),
+                          labelText: 'Phone Number'),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter a phone number';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: _addressController,
+                      decoration: InputDecoration(
+                          suffixIcon: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 20,
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              border: Border.all(
+                                color: burntgold.shade700,
+                                width: 3.0,
+                              ),
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: TextFormField(
+                              controller: _addressController,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.only(bottom: 16.0, left: 10),
+                                border: InputBorder.none,
+                                hintText: 'Address',
+                                hintStyle: TextStyle(color: burntgold.shade300),
+                              ),
+                            ),
+                          ),
+                          enabledBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.transparent),
+                          ),
+                          focusedBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.transparent),
+                          ),
+                          labelText: 'Address'),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter an address';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: _nameController,
+                      decoration: InputDecoration(
+                          suffixIcon: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 20,
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              border: Border.all(
+                                color: burntgold.shade700,
+                                width: 3.0,
+                              ),
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: TextFormField(
+                              controller: _nameController,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.only(bottom: 16.0, left: 10),
+                                border: InputBorder.none,
+                                hintText: 'Name',
+                                hintStyle: TextStyle(color: burntgold.shade300),
+                              ),
+                            ),
+                          ),
+                          enabledBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.transparent),
+                          ),
+                          focusedBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.transparent),
+                          ),
+                          labelText: 'Name'),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter your name';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: _surnameController,
+                      decoration: InputDecoration(
+                        suffixIcon: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 20,
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            border: Border.all(
+                              color: burntgold.shade700,
+                              width: 3.0,
+                            ),
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          child: TextFormField(
+                            controller: _surnameController,
+                            style: const TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.only(bottom: 16.0, left: 10),
+                              border: InputBorder.none,
+                              hintText: 'Surname',
+                              hintStyle: TextStyle(color: burntgold.shade300),
+                            ),
+                          ),
+                        ),
+                        enabledBorder: const UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent),
+                        ),
+                        focusedBorder: const UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent),
+                        ),
+                        labelText: 'Surname',
+                        labelStyle: const TextStyle(color: Colors.white),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter your surname';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16.0),
+                    ElevatedButton(
+                      onPressed: () async {
+                        String backendUrl = "http://127.0.0.1:6969/api/auth/register";
+                        final response = await http.post(Uri.parse(backendUrl), body: {
+                          'username': _usernameController.text,
+                          'password': _passwordController.text,
+                          'name': _nameController.text,
+                          'surname': _surnameController.text,
+                          'email': _emailController.text,
+                          'phone_number': _phoneNumberController.text,
+                          'city': _addressController.text,
+                        });
+
+                        if (response.statusCode == 200) {
+                          // Registration successful
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Registration Successful'),
+                                content: Text('You have successfully registered.'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: Text('OK'),
+                                    onPressed: () {
+                                      Navigator.pushNamed(context, '/login.dart'); // Navigate to login route
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                          setState(() {
+                            _feedbackText = 'Registration successful. Welcome, ${_usernameController.text}!';
+                            _usernameController.clear();
+                            _passwordController.clear();
+                            _emailController.clear();
+                            _phoneNumberController.clear();
+                            _addressController.clear();
+                            _nameController.clear();
+                            _surnameController.clear();
+                          });
+                        } else {
+                          // Registration failed
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Registration Failed'),
+                                content: Text('Registration failed. Please try again.'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: Text('OK'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop(); // Close dialog
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: burntgold.shade500,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            width: 300,
+                            child: Center(
+                              child: Text(
+                                'REGISTER',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: burntgold.shade900,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 16.0),
+                    Text(
+                      _feedbackText,
+                      style: TextStyle(
+                        color: Colors.green,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
