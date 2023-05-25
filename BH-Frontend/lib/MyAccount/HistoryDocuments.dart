@@ -1,6 +1,5 @@
 // ignore_for_file: file_names
 import 'package:flutter/material.dart';
-import 'package:ipApp/MyAccount/InspectPdf.dart';
 import 'package:ipApp/Navigation/ontop_navigation_bar.dart';
 import '../Navigation/bottom_navigation_bar.dart';
 
@@ -206,9 +205,7 @@ class _HistoryDocumentsState extends State<HistoryDocuments> {
                                       child: TextButton(
                                         onPressed: () {
                                           setState(() {
-                                            Navigator.of(context).push(MaterialPageRoute(
-                                                builder: (BuildContext context) =>
-                                                    InspectPdf(path: documents[i].getPath().toString())));
+
                                           });
                                         },
                                         style: ButtonStyle(
