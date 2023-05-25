@@ -1,11 +1,22 @@
-import '../../Navigation/ontop_navigation_bar.dart';
+import 'dart:convert';
+import 'dart:typed_data';
+
+import 'package:ipApp/Institution/dropdown/services/download_service.dart';
+import 'package:ipApp/Institution/dropdown/services/login_service.dart';
+import 'package:ipApp/Institution/dropdown/services/starttask_service.dart';
+import 'package:ipApp/Institution/dropdown/services/upload_service.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import '../../Navigation/bottom_navigation_bar.dart';
 import '../../ToDo/main.dart';
 import './models/document.dart';
+import 'models/tokenProvider.dart';
 import 'services/task_service.dart';
 import 'services/documents_service.dart';
 import 'package:flutter/material.dart';
 import 'package:adaptive_navbar/adaptive_navbar.dart';
+import '../../Login/User.dart';
 
 void main() {
   runApp(const App2());
@@ -27,7 +38,6 @@ class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _MyHomePageState createState() => _MyHomePageState();
 }
 
@@ -38,8 +48,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    super.initState();
-    _loadTasksNames();
+    super.initState();{
+      _loadTasksNames();
+    };
   }
 
   Future<void> _loadTasksNames() async {
@@ -49,10 +60,46 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
+    final sw = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: OnTopNavigationBar(),
+      appBar: AdaptiveNavBar(
+        screenWidth: sw,
+        backgroundColor: const Color(0xFF101C2B),
+        leading: Image.asset(
+          'images/logo-ip.png',
+          width: 50,
+          height: 50,
+        ),
+        navBarItems: [
+          NavBarItem(
+            text: "Home",
+            onTap: () {
+              Navigator.pushNamed(context, "routeName");
+            },
+          ),
+          NavBarItem(
+            text: "Institution",
+            onTap: () {
+              Navigator.pushNamed(context, "routeName");
+            },
+          ),
+          NavBarItem(
+            text: "Contact",
+            onTap: () {
+              Navigator.pushNamed(context, "routeName");
+            },
+          ),
+          NavBarItem(
+            text: "My account",
+            onTap: () {
+              Navigator.pushNamed(context, "routeName");
+            },
+          ),
+        ],
+      ),
       body: Center(
           child: Container(
         //toata pagina
@@ -85,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         borderSide: BorderSide.none,
                       ),
                       hintStyle: const TextStyle(color: Colors.white),
-                      hintText: 'Select your document',
+                      hintText: 'Selecteaza document',
                     ),
                     value: _selectedOption,
                     onChanged: (newValue) {
@@ -127,9 +174,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class MyOtherPage extends StatefulWidget {
   final String selectedOption;
+  late String nameOption = selectedOption;
 
   //const MyOtherPage({Key? key}) : super(key: key);
-  const MyOtherPage({Key? key, required this.selectedOption}) : super(key: key);
+   MyOtherPage({Key? key, required this.selectedOption}) : super(key: key);
 
   @override
   _MyOtherPageState createState() => _MyOtherPageState();
@@ -138,11 +186,38 @@ class MyOtherPage extends StatefulWidget {
 class _MyOtherPageState extends State<MyOtherPage> {
   final DocumentApi _documentApi = DocumentApi();
   late List<Document>? _documents = [];
+  final StartTask _startTask = StartTask();
+  late String _tododocuments;
+  final FileUploader _fileUploader = FileUploader();
+  final FileDownloader _fileDownloader = FileDownloader();
+  bool isButtonVisible1 = true;
+  bool isButtonVisible2 = true;
 
   @override
   void initState() {
     super.initState();
     _loadDocuments();
+  }
+
+  Future<void> _uploadFile(int id) async {
+    try {
+      print(id);
+      String result = await _fileUploader.uploadFile(id);
+      print('File uploaded successfully. Result: $result');
+    } catch (e) {
+      print('Failed to upload file: $e');
+    }
+  }
+
+
+  Future<void> _downloadFile(int id) async {
+    final downloader = FileDownloader();
+    try {
+      await downloader.downloadFile(id);
+      print('File download completed.');
+    } catch (e) {
+      print('Error: $e');
+    }
   }
 
   Future<void> _loadDocuments() async {
@@ -152,14 +227,63 @@ class _MyOtherPageState extends State<MyOtherPage> {
     });
   }
 
+  Future<void> _loadToDoDocuments(String username, String taskName) async {
+    final todo_documents= await _startTask.startTask(username, taskName);
+    print(todo_documents);
+    setState(() {
+      _tododocuments=todo_documents;
+    });
+  }
+
+  Future<void> _loadExtraDocuments(String name) async {
+    widget.nameOption=name;
+    final documents = await _documentApi.getDocuments(name);
+    setState(() {
+      _documents = documents;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final sw = MediaQuery.of(context).size.width;
-    bool isButtonVisible = false;
 
     return Scaffold(
       backgroundColor: const Color(0xff293441),
-      appBar: OnTopNavigationBar(),
+      appBar: AdaptiveNavBar(
+        screenWidth: sw,
+        backgroundColor: const Color(0xFF101C2B),
+        leading: Image.asset(
+          'images/logo-ip.png',
+          width: 50,
+          height: 50,
+        ),
+        navBarItems: [
+          NavBarItem(
+            text: "Home",
+            onTap: () {
+              Navigator.pushNamed(context, "routeName");
+            },
+          ),
+          NavBarItem(
+            text: "Institution",
+            onTap: () {
+              Navigator.pushNamed(context, "routeName");
+            },
+          ),
+          NavBarItem(
+            text: "Contact",
+            onTap: () {
+              Navigator.pushNamed(context, "routeName");
+            },
+          ),
+          NavBarItem(
+            text: "My account",
+            onTap: () {
+              Navigator.pushNamed(context, "routeName");
+            },
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Center(
           child: SizedBox(
@@ -170,7 +294,7 @@ class _MyOtherPageState extends State<MyOtherPage> {
                 Container(
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
-                    'Acte necesare pentru eliberare ${widget.selectedOption}',
+                    'Acte necesare pentru eliberare ${widget.nameOption}',
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                         fontFamily: "Inria Serif",
@@ -215,42 +339,71 @@ class _MyOtherPageState extends State<MyOtherPage> {
                                     padding: const EdgeInsets.only(top: 10),
                                     child: Row(
                                       children: [
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            // Button 1 onPressed callback
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(40),
-                                            ),
-                                            backgroundColor:
-                                                const Color(0xFF101C2B),
-                                          ),
-                                          child: const Text('Upload'),
-                                        ),
-                                        const SizedBox(
-                                            width:
-                                                16), // Add some spacing between the buttons
                                         Visibility(
                                           visible:
-                                              isButtonVisible, // Set the visibility condition
+                                              _documents?[index].file == '0' && _documents?[index].path != '0',
+                                          maintainSize: true,
+                                          maintainAnimation: true,
+                                          maintainState: true,
+                                          child: TextButton(
+                                            onPressed: () {
+                                              print("Link pressed");
+                                              _loadExtraDocuments(_documents?[index].name ?? '');
+                                              // launchUrl(Uri.parse(_documents?[
+                                              //             index]
+                                              //         .path ??
+                                              //     '')); // Replace with your logic to redirect to the link
+                                            },
+                                            child: const Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                'Link',
+                                                textAlign: TextAlign.left,
+                                                // Align text to the left
+                                                style: TextStyle(
+                                                  color:
+                                                      Color(0xFF101C2B),
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Visibility(
+                                          visible:
+                                          _documents?[index].file != '0',
                                           maintainSize: true,
                                           maintainAnimation: true,
                                           maintainState: true,
                                           child: ElevatedButton(
                                             onPressed: () {
-                                              // Button 2 onPressed callback
+                                              _downloadFile(_documents?[index].documentId ?? 0);
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                BorderRadius.circular(40),
+                                              ),
+                                              primary: const Color(0xFF101C2B),
+                                            ),
+                                            child: const Text('Download'),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 16),
+                                        Visibility(
+                                          visible: myUser.getRoles()=="ROLE_ADMIN",
+                                        child: ElevatedButton(
+                                            onPressed: () {
+                                              _uploadFile(_documents?[index].documentId ?? 0);
                                             },
                                             style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(40),
                                               ),
-                                              backgroundColor:
-                                                  const Color(0xFF101C2B),
+                                              primary: const Color(0xFF101C2B),
                                             ),
-                                            child: Text('Button 2'),
+                                            child: const Text('Upload'),
                                           ),
                                         ),
                                       ],
@@ -267,6 +420,7 @@ class _MyOtherPageState extends State<MyOtherPage> {
                           // Set padding from content above
                           child: ElevatedButton(
                             onPressed: () {
+                              _loadToDoDocuments(myUser.getUsername(), widget.nameOption);
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) => ToDoListPage(
