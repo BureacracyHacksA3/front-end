@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../Navigation/bottom_navigation_bar.dart';
+import '../../Navigation/ontop_navigation_bar.dart';
 import '../../ToDo/main.dart';
 import './models/document.dart';
 import 'models/tokenProvider.dart';
@@ -65,41 +66,42 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final sw = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AdaptiveNavBar(
-        screenWidth: sw,
-        backgroundColor: const Color(0xFF101C2B),
-        leading: Image.asset(
-          'images/logo-ip.png',
-          width: 50,
-          height: 50,
-        ),
-        navBarItems: [
-          NavBarItem(
-            text: "Home",
-            onTap: () {
-              Navigator.pushNamed(context, "routeName");
-            },
-          ),
-          NavBarItem(
-            text: "Institution",
-            onTap: () {
-              Navigator.pushNamed(context, "routeName");
-            },
-          ),
-          NavBarItem(
-            text: "Contact",
-            onTap: () {
-              Navigator.pushNamed(context, "routeName");
-            },
-          ),
-          NavBarItem(
-            text: "My account",
-            onTap: () {
-              Navigator.pushNamed(context, "routeName");
-            },
-          ),
-        ],
-      ),
+      appBar: const OnTopNavigationBar(),
+      // appBar: AdaptiveNavBar(
+      //   screenWidth: sw,
+      //   backgroundColor: const Color(0xFF101C2B),
+      //   leading: Image.asset(
+      //     'images/logo-ip.png',
+      //     width: 50,
+      //     height: 50,
+      //   ),
+      //   navBarItems: [
+      //     NavBarItem(
+      //       text: "Home",
+      //       onTap: () {
+      //         Navigator.pushNamed(context, "routeName");
+      //       },
+      //     ),
+      //     NavBarItem(
+      //       text: "Institution",
+      //       onTap: () {
+      //         Navigator.pushNamed(context, "routeName");
+      //       },
+      //     ),
+      //     NavBarItem(
+      //       text: "Contact",
+      //       onTap: () {
+      //         Navigator.pushNamed(context, "routeName");
+      //       },
+      //     ),
+      //     NavBarItem(
+      //       text: "My account",
+      //       onTap: () {
+      //         Navigator.pushNamed(context, "routeName");
+      //       },
+      //     ),
+      //   ],
+      // ),
       body: Center(
           child: Container(
         //toata pagina
@@ -249,41 +251,42 @@ class _MyOtherPageState extends State<MyOtherPage> {
 
     return Scaffold(
       backgroundColor: const Color(0xff293441),
-      appBar: AdaptiveNavBar(
-        screenWidth: sw,
-        backgroundColor: const Color(0xFF101C2B),
-        leading: Image.asset(
-          'images/logo-ip.png',
-          width: 50,
-          height: 50,
-        ),
-        navBarItems: [
-          NavBarItem(
-            text: "Home",
-            onTap: () {
-              Navigator.pushNamed(context, "routeName");
-            },
-          ),
-          NavBarItem(
-            text: "Institution",
-            onTap: () {
-              Navigator.pushNamed(context, "routeName");
-            },
-          ),
-          NavBarItem(
-            text: "Contact",
-            onTap: () {
-              Navigator.pushNamed(context, "routeName");
-            },
-          ),
-          NavBarItem(
-            text: "My account",
-            onTap: () {
-              Navigator.pushNamed(context, "routeName");
-            },
-          ),
-        ],
-      ),
+      appBar: const OnTopNavigationBar(),
+      // appBar: AdaptiveNavBar(
+      //   screenWidth: sw,
+      //   backgroundColor: const Color(0xFF101C2B),
+      //   leading: Image.asset(
+      //     'images/logo-ip.png',
+      //     width: 50,
+      //     height: 50,
+      //   ),
+      //   navBarItems: [
+      //     NavBarItem(
+      //       text: "Home",
+      //       onTap: () {
+      //         Navigator.pushNamed(context, "routeName");
+      //       },
+      //     ),
+      //     NavBarItem(
+      //       text: "Institution",
+      //       onTap: () {
+      //         Navigator.pushNamed(context, "routeName");
+      //       },
+      //     ),
+      //     NavBarItem(
+      //       text: "Contact",
+      //       onTap: () {
+      //         Navigator.pushNamed(context, "routeName");
+      //       },
+      //     ),
+      //     NavBarItem(
+      //       text: "My account",
+      //       onTap: () {
+      //         Navigator.pushNamed(context, "routeName");
+      //       },
+      //     ),
+      //   ],
+      // ),
       body: SingleChildScrollView(
         child: Center(
           child: SizedBox(
