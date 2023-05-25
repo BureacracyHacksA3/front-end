@@ -290,7 +290,7 @@ class _MyOtherPageState extends State<MyOtherPage> {
       body: SingleChildScrollView(
         child: Center(
           child: SizedBox(
-            height: 1200,
+            //height: 1200,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
