@@ -89,6 +89,7 @@ class _MyDocumentsState extends State<MyDocuments> {
               TextButton(
                 child: const Text('SUBMIT'),
                 onPressed: () {
+                  _text.clear();
                   Navigator.of(context).pop();
                 },
               )
@@ -181,7 +182,8 @@ class _MyDocumentsState extends State<MyDocuments> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 50, right: 8.0, left: 8.0),
+                  padding:
+                      const EdgeInsets.only(top: 50, right: 8.0, left: 8.0),
                   child: SizedBox(
                     height: 250,
                     child: ListView.builder(
