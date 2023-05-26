@@ -1,7 +1,13 @@
 // ignore_for_file: file_names
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:ipApp/Navigation/ontop_navigation_bar.dart';
+import '../Login/User.dart';
 import '../Navigation/bottom_navigation_bar.dart';
+import 'package:http/http.dart' as http;
+
+import '../ToDo/main.dart';
 
 class HistoryDocuments extends StatefulWidget {
   const HistoryDocuments({Key? key}) : super(key: key);
@@ -17,7 +23,8 @@ class Document {
   String? name;
   String? path;
 
-  Document({this.status, this.idInstitution, this.idDocument, this.name, this.path});
+  Document(
+      {this.status, this.idInstitution, this.idDocument, this.name, this.path});
 
   String? getStatus() {
     return status;
@@ -41,49 +48,9 @@ class Document {
 }
 
 class _HistoryDocumentsState extends State<HistoryDocuments> {
-  final List<dynamic> data = [
-    {
-      "headers": {},
-      "body": {
-        "document_id": 1231,
-        "name": "Bilant Guvernare",
-        "description": "-",
-        "price": 2.0,
-        "institution_id": 682,
-        "path":
-            "https://gov.ro/fisiere/programe_fisiere/26-05_Guvernul_Nicolae-Ionel_Ciuca_-_Bilant_la_6_luni_de_guvernare.pdf"
-      },
-      "statusCode": "DONE",
-      "statusCodeValue": 200,
-    },
-    {
-      "headers": {},
-      "body": {
-        "document_id": 834,
-        "name": "Raport Strategie",
-        "description": "-",
-        "price": 2.0,
-        "institution_id": 89,
-        "path": "https://gov.ro/fisiere/programe_fisiere/Raport_final_strategie_mai_2022.pdf"
-      },
-      "statusCode": "DONE",
-      "statusCodeValue": 200,
-    },
-    {
-      "headers": {},
-      "body": {
-        "document_id": 951,
-        "name": "Program Guvernare",
-        "description": "-",
-        "price": 2.0,
-        "institution_id": 151,
-        "path": "https://gov.ro/fisiere/programe_fisiere/Program_de_Guvernare_2021%E2%80%942024.pdf"
-      },
-      "statusCode": "IN PROGRESS",
-      "statusCodeValue": 200,
-    }
-  ];
-  List<Document> documents = [];
+  List<String> tasksName = [];
+  List<String> taskStatus = [];
+  List<dynamic> documents = [];
 
   @override
   void initState() {
@@ -92,24 +59,31 @@ class _HistoryDocumentsState extends State<HistoryDocuments> {
   }
 
   Future<void> getInformations() async {
-    for (int i = 0; i < data.length; ++i) {
-      Map<String, dynamic> item = data[i] as Map<String, dynamic>;
-      Map<String, dynamic> documentInfo = item['body'] as Map<String, dynamic>;
-      String? status = item['statusCode'] as String?;
-      Document doc = Document(
-          status: status,
-          idInstitution: documentInfo['institution_id'],
-          idDocument: documentInfo['document_id'],
-          name: documentInfo['name'],
-          path: documentInfo['path']);
-      documents.add(doc);
-    }
+    String username = myUser.getUsername();
+    final String url =
+        "http://localhost:6969/api/user-service/get-user-tasks?username=$username";
+    final Uri uri = Uri.parse(url);
+    try {
+      final token = myUser.getToken();
+      final response =
+          await http.get(uri, headers: {'Authorization': 'Bearer $token'});
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body) as List<dynamic>;
+        documents = data;
+        setState(() {
+          for (final doc in documents) {
+            tasksName.add(doc['TaskName']);
+            taskStatus.add(doc['Status']);
+          }
+        });
+      }
+    } catch (e) {}
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Your Documents',
+      title: 'Your Tasks',
       home: Scaffold(
         backgroundColor: const Color(0xFF293441),
         appBar: const OnTopNavigationBar(),
@@ -122,7 +96,7 @@ class _HistoryDocumentsState extends State<HistoryDocuments> {
                 width: 500,
                 alignment: AlignmentDirectional.center,
                 child: const Text(
-                  'Your Documents',
+                  'Your Tasks',
                   style: TextStyle(
                     fontFamily: 'Louis George Cafe',
                     color: Color(0xFFe5e7e8),
@@ -133,11 +107,11 @@ class _HistoryDocumentsState extends State<HistoryDocuments> {
               Padding(
                 padding: const EdgeInsets.only(top: 20, right: 8.0, left: 8.0),
                 child: SizedBox(
-                  height: 500,
+                  height: 400,
                   child: ListView(
                     scrollDirection: Axis.vertical,
                     children: [
-                      for (int i = 0; i < data.length; ++i)
+                      for (int i = 0; i < tasksName.length; ++i)
                         Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Opacity(
@@ -156,18 +130,18 @@ class _HistoryDocumentsState extends State<HistoryDocuments> {
                                   children: <Widget>[
                                     Column(
                                       children: <Widget>[
-                                        if (documents[i].getStatus().toString() == 'DONE')
+                                        if (taskStatus[i] == 'done')
                                           Text(
-                                            'Status: ${documents[i].getStatus()}',
+                                            'Status: DONE',
                                             style: const TextStyle(
                                               fontFamily: 'Louis George Cafe',
                                               color: Colors.green,
                                               fontSize: 15,
                                             ),
                                           ),
-                                        if (documents[i].getStatus().toString() == 'IN PROGRESS')
+                                        if (taskStatus[i] == 'pending')
                                           Text(
-                                            'Status: ${documents[i].getStatus()}',
+                                            'Status: IN PROGRESS',
                                             style: const TextStyle(
                                               fontFamily: 'Louis George Cafe',
                                               color: Colors.yellow,
@@ -177,23 +151,7 @@ class _HistoryDocumentsState extends State<HistoryDocuments> {
                                       ],
                                     ),
                                     Text(
-                                      'Institution Id: ${documents[i].getIdInstitution()}',
-                                      style: const TextStyle(
-                                        fontFamily: 'Louis George Cafe',
-                                        color: Color(0xFFe5e7e8),
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                    Text(
-                                      'Document Id: ${documents[i].getIdDocument()}',
-                                      style: const TextStyle(
-                                        fontFamily: 'Louis George Cafe',
-                                        color: Color(0xFFe5e7e8),
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                    Text(
-                                      'Document Name: ${documents[i].getName()}',
+                                      'Task Name: ' + tasksName[i],
                                       style: const TextStyle(
                                         fontFamily: 'Louis George Cafe',
                                         color: Color(0xFFe5e7e8),
@@ -204,15 +162,21 @@ class _HistoryDocumentsState extends State<HistoryDocuments> {
                                       padding: const EdgeInsets.only(top: 10),
                                       child: TextButton(
                                         onPressed: () {
-                                          setState(() {
-
-                                          });
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ToDoListPage(
+                                                      TaskName: tasksName[i]),
+                                            ),
+                                          );
                                         },
                                         style: ButtonStyle(
-                                          backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF896f4e)),
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  const Color(0xFF896f4e)),
                                         ),
                                         child: const Text(
-                                          'Inspect Document',
+                                          'Inspect Task',
                                           style: TextStyle(
                                             fontFamily: 'Louis George Cafe',
                                             color: Color(0xFFe5e7e8),

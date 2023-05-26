@@ -177,7 +177,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             controller: _usernameController,
                             style: const TextStyle(color: Colors.white),
                             decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.only(bottom: 16.0, left: 10),
+                              contentPadding:
+                                  const EdgeInsets.only(bottom: 16.0, left: 10),
                               border: InputBorder.none,
                               hintText: 'Username',
                               hintStyle: TextStyle(color: burntgold.shade300),
@@ -217,7 +218,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             controller: _passwordController,
                             style: const TextStyle(color: Colors.white),
                             decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.only(bottom: 16.0, left: 10),
+                              contentPadding:
+                                  const EdgeInsets.only(bottom: 16.0, left: 10),
                               border: InputBorder.none,
                               hintText: 'Password',
                               hintStyle: TextStyle(color: burntgold.shade300),
@@ -256,7 +258,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             controller: _emailController,
                             style: const TextStyle(color: Colors.white),
                             decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.only(bottom: 16.0, left: 10),
+                              contentPadding:
+                                  const EdgeInsets.only(bottom: 16.0, left: 10),
                               border: InputBorder.none,
                               hintText: 'E-mail',
                               hintStyle: TextStyle(color: burntgold.shade300),
@@ -298,7 +301,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             controller: _phoneNumberController,
                             style: const TextStyle(color: Colors.white),
                             decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.only(bottom: 16.0, left: 10),
+                              contentPadding:
+                                  const EdgeInsets.only(bottom: 16.0, left: 10),
                               border: InputBorder.none,
                               hintText: 'Phone Number',
                               hintStyle: TextStyle(color: burntgold.shade300),
@@ -337,7 +341,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             controller: _addressController,
                             style: const TextStyle(color: Colors.white),
                             decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.only(bottom: 16.0, left: 10),
+                              contentPadding:
+                                  const EdgeInsets.only(bottom: 16.0, left: 10),
                               border: InputBorder.none,
                               hintText: 'Address',
                               hintStyle: TextStyle(color: burntgold.shade300),
@@ -376,7 +381,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             controller: _nameController,
                             style: const TextStyle(color: Colors.white),
                             decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.only(bottom: 16.0, left: 10),
+                              contentPadding:
+                                  const EdgeInsets.only(bottom: 16.0, left: 10),
                               border: InputBorder.none,
                               hintText: 'Name',
                               hintStyle: TextStyle(color: burntgold.shade300),
@@ -415,7 +421,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           controller: _surnameController,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.only(bottom: 16.0, left: 10),
+                            contentPadding:
+                                const EdgeInsets.only(bottom: 16.0, left: 10),
                             border: InputBorder.none,
                             hintText: 'Surname',
                             hintStyle: TextStyle(color: burntgold.shade300),
@@ -441,8 +448,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   const SizedBox(height: 16.0),
                   ElevatedButton(
                     onPressed: () async {
-                      String backendUrl = "http://127.0.0.1:6969/api/auth/register";
-                      final response = await http.post(Uri.parse(backendUrl), body: {
+                      String backendUrl =
+                          "http://127.0.0.1:6969/api/auth/register";
+                      final response =
+                          await http.post(Uri.parse(backendUrl), body: {
                         'username': _usernameController.text,
                         'password': _passwordController.text,
                         'name': _nameController.text,
@@ -460,12 +469,16 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           builder: (BuildContext context) {
                             return AlertDialog(
                               title: const Text('Registration Successful'),
-                              content: const Text('You have successfully registered.'),
+                              content: const Text(
+                                  'You have successfully registered.'),
                               actions: <Widget>[
                                 TextButton(
                                   child: const Text('OK'),
                                   onPressed: () {
-                                    Navigator.pushNamed(context, '/login.dart'); // Navigate to login route
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (context) => Login()),
+                                    );
                                   },
                                 ),
                               ],
@@ -473,7 +486,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           },
                         );
                         setState(() {
-                          _feedbackText = 'Registration successful. Welcome, ${_usernameController.text}!';
+                          _feedbackText =
+                              'Registration successful. Welcome, ${_usernameController.text}!';
                           _usernameController.clear();
                           _passwordController.clear();
                           _emailController.clear();
@@ -485,12 +499,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       } else {
                         // Registration failed
                         // ignore: use_build_context_synchronously
+                        print(response.body);
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
                               title: const Text('Registration Failed'),
-                              content: const Text('Registration failed. Please try again.'),
+                              content: const Text(
+                                  'Registration failed. Please try again.'),
                               actions: <Widget>[
                                 TextButton(
                                   child: const Text('OK'),

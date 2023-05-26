@@ -213,7 +213,8 @@ class _ProfilePage extends State<ProfilePage> {
                                         color: Color(0xFFe5e7e8),
                                       ),
                                       enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.white),
+                                        borderSide:
+                                            BorderSide(color: Colors.white),
                                       ),
                                     )),
                               ],
@@ -240,10 +241,10 @@ class _ProfilePage extends State<ProfilePage> {
                                         color: Color(0xFFe5e7e8),
                                       ),
                                       enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.white),
+                                        borderSide:
+                                            BorderSide(color: Colors.white),
                                       ),
-                                    )
-                                ),
+                                    )),
                               ],
                             ),
                           ),
@@ -254,7 +255,8 @@ class _ProfilePage extends State<ProfilePage> {
                             onPressed: () async {
                               String newPhone = phoneChange.value.text;
                               String newEmail = emailChange.value.text;
-                              const String backendUrl = "http://127.0.0.1:6969/api/user-service/update";
+                              const String backendUrl =
+                                  "http://127.0.0.1:6969/api/user-service/update-without";
                               final Uri uri = Uri.parse(backendUrl);
 
                               if (newPhone != '') myUser.setPhone(newPhone);
@@ -266,15 +268,19 @@ class _ProfilePage extends State<ProfilePage> {
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      title: const Text('No field has been modified!'),
+                                      title: const Text(
+                                          'No field has been modified!'),
                                       content: const Text(''),
                                       actions: <Widget>[
                                         TextButton(
                                           child: const Text('OK'),
                                           onPressed: () {
                                             Navigator.of(context).pop();
-                                            Navigator.of(context).push(MaterialPageRoute(
-                                                builder: (BuildContext context) => const AccountPage()));
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        const AccountPage()));
                                             // Close dialog
                                           },
                                         ),
@@ -294,22 +300,30 @@ class _ProfilePage extends State<ProfilePage> {
 
                                 try {
                                   final token = myUser.getToken();
-                                  final response = await http.post(uri, body: body, headers: {'Authorization': 'Bearer $token'});
+                                  final response = await http.post(uri,
+                                      body: body,
+                                      headers: {
+                                        'Authorization': 'Bearer $token'
+                                      });
                                   if (response.statusCode == 200) {
                                     // ignore: use_build_context_synchronously
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog(
-                                          title: const Text('Modify succesfully!'),
+                                          title:
+                                              const Text('Modify succesfully!'),
                                           content: const Text(''),
                                           actions: <Widget>[
                                             TextButton(
                                               child: const Text('OK'),
                                               onPressed: () {
                                                 Navigator.of(context).pop();
-                                                Navigator.of(context).push(MaterialPageRoute(
-                                                    builder: (BuildContext context) => const AccountPage()));
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (BuildContext
+                                                                context) =>
+                                                            const AccountPage()));
                                                 // Close dialog
                                               },
                                             ),
@@ -323,15 +337,19 @@ class _ProfilePage extends State<ProfilePage> {
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
-                                        title: const Text('No modify succesfully!'),
+                                        title: const Text(
+                                            'No modify succesfully!'),
                                         content: const Text(''),
                                         actions: <Widget>[
                                           TextButton(
                                             child: const Text('OK'),
                                             onPressed: () {
                                               Navigator.of(context).pop();
-                                              Navigator.of(context).push(MaterialPageRoute(
-                                                  builder: (BuildContext context) => const AccountPage()));
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          const AccountPage()));
                                               // Close dialog
                                             },
                                           ),
