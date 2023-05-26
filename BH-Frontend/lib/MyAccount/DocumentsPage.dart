@@ -59,7 +59,8 @@ class _MyDocumentsState extends State<MyDocuments> {
     FilePickerResult? result =
         await FilePicker.platform.pickFiles(type: FileType.image);
     if (result != null) {
-      return File(result.files.single.path!);
+      List<int> bytes = result.files.single.bytes!;
+      return File(result.files.single.name)..writeAsBytes(bytes);
     }
     return null;
   }
