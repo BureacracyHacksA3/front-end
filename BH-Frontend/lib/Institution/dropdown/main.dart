@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../Navigation/bottom_navigation_bar.dart';
+import '../../Navigation/ontop_navigation_bar.dart';
 import '../../ToDo/main.dart';
 import './models/document.dart';
 import 'models/tokenProvider.dart';
@@ -48,9 +49,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    super.initState();{
+    super.initState();
+    {
       _loadTasksNames();
-    };
+    }
+    ;
   }
 
   Future<void> _loadTasksNames() async {
@@ -60,46 +63,46 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     final sw = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AdaptiveNavBar(
-        screenWidth: sw,
-        backgroundColor: const Color(0xFF101C2B),
-        leading: Image.asset(
-          'images/logo-ip.png',
-          width: 50,
-          height: 50,
-        ),
-        navBarItems: [
-          NavBarItem(
-            text: "Home",
-            onTap: () {
-              Navigator.pushNamed(context, "routeName");
-            },
-          ),
-          NavBarItem(
-            text: "Institution",
-            onTap: () {
-              Navigator.pushNamed(context, "routeName");
-            },
-          ),
-          NavBarItem(
-            text: "Contact",
-            onTap: () {
-              Navigator.pushNamed(context, "routeName");
-            },
-          ),
-          NavBarItem(
-            text: "My account",
-            onTap: () {
-              Navigator.pushNamed(context, "routeName");
-            },
-          ),
-        ],
-      ),
+      appBar: const OnTopNavigationBar(),
+      // appBar: AdaptiveNavBar(
+      //   screenWidth: sw,
+      //   backgroundColor: const Color(0xFF101C2B),
+      //   leading: Image.asset(
+      //     'images/logo-ip.png',
+      //     width: 50,
+      //     height: 50,
+      //   ),
+      //   navBarItems: [
+      //     NavBarItem(
+      //       text: "Home",
+      //       onTap: () {
+      //         Navigator.pushNamed(context, "routeName");
+      //       },
+      //     ),
+      //     NavBarItem(
+      //       text: "Institution",
+      //       onTap: () {
+      //         Navigator.pushNamed(context, "routeName");
+      //       },
+      //     ),
+      //     NavBarItem(
+      //       text: "Contact",
+      //       onTap: () {
+      //         Navigator.pushNamed(context, "routeName");
+      //       },
+      //     ),
+      //     NavBarItem(
+      //       text: "My account",
+      //       onTap: () {
+      //         Navigator.pushNamed(context, "routeName");
+      //       },
+      //     ),
+      //   ],
+      // ),
       body: Center(
           child: Container(
         //toata pagina
@@ -177,7 +180,7 @@ class MyOtherPage extends StatefulWidget {
   late String nameOption = selectedOption;
 
   //const MyOtherPage({Key? key}) : super(key: key);
-   MyOtherPage({Key? key, required this.selectedOption}) : super(key: key);
+  MyOtherPage({Key? key, required this.selectedOption}) : super(key: key);
 
   @override
   _MyOtherPageState createState() => _MyOtherPageState();
@@ -209,7 +212,6 @@ class _MyOtherPageState extends State<MyOtherPage> {
     }
   }
 
-
   Future<void> _downloadFile(int id) async {
     final downloader = FileDownloader();
     try {
@@ -228,15 +230,15 @@ class _MyOtherPageState extends State<MyOtherPage> {
   }
 
   Future<void> _loadToDoDocuments(String username, String taskName) async {
-    final todo_documents= await _startTask.startTask(username, taskName);
+    final todo_documents = await _startTask.startTask(username, taskName);
     print(todo_documents);
     setState(() {
-      _tododocuments=todo_documents;
+      _tododocuments = todo_documents;
     });
   }
 
   Future<void> _loadExtraDocuments(String name) async {
-    widget.nameOption=name;
+    widget.nameOption = name;
     final documents = await _documentApi.getDocuments(name);
     setState(() {
       _documents = documents;
@@ -249,45 +251,46 @@ class _MyOtherPageState extends State<MyOtherPage> {
 
     return Scaffold(
       backgroundColor: const Color(0xff293441),
-      appBar: AdaptiveNavBar(
-        screenWidth: sw,
-        backgroundColor: const Color(0xFF101C2B),
-        leading: Image.asset(
-          'images/logo-ip.png',
-          width: 50,
-          height: 50,
-        ),
-        navBarItems: [
-          NavBarItem(
-            text: "Home",
-            onTap: () {
-              Navigator.pushNamed(context, "routeName");
-            },
-          ),
-          NavBarItem(
-            text: "Institution",
-            onTap: () {
-              Navigator.pushNamed(context, "routeName");
-            },
-          ),
-          NavBarItem(
-            text: "Contact",
-            onTap: () {
-              Navigator.pushNamed(context, "routeName");
-            },
-          ),
-          NavBarItem(
-            text: "My account",
-            onTap: () {
-              Navigator.pushNamed(context, "routeName");
-            },
-          ),
-        ],
-      ),
+      appBar: const OnTopNavigationBar(),
+      // appBar: AdaptiveNavBar(
+      //   screenWidth: sw,
+      //   backgroundColor: const Color(0xFF101C2B),
+      //   leading: Image.asset(
+      //     'images/logo-ip.png',
+      //     width: 50,
+      //     height: 50,
+      //   ),
+      //   navBarItems: [
+      //     NavBarItem(
+      //       text: "Home",
+      //       onTap: () {
+      //         Navigator.pushNamed(context, "routeName");
+      //       },
+      //     ),
+      //     NavBarItem(
+      //       text: "Institution",
+      //       onTap: () {
+      //         Navigator.pushNamed(context, "routeName");
+      //       },
+      //     ),
+      //     NavBarItem(
+      //       text: "Contact",
+      //       onTap: () {
+      //         Navigator.pushNamed(context, "routeName");
+      //       },
+      //     ),
+      //     NavBarItem(
+      //       text: "My account",
+      //       onTap: () {
+      //         Navigator.pushNamed(context, "routeName");
+      //       },
+      //     ),
+      //   ],
+      // ),
       body: SingleChildScrollView(
         child: Center(
           child: SizedBox(
-            height: 1200,
+            //height: 1200,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -340,15 +343,18 @@ class _MyOtherPageState extends State<MyOtherPage> {
                                     child: Row(
                                       children: [
                                         Visibility(
-                                          visible:
-                                              _documents?[index].file == '0' && _documents?[index].path != '0',
+                                          visible: _documents?[index].file ==
+                                                  '0' &&
+                                              _documents?[index].path != '0',
                                           maintainSize: true,
                                           maintainAnimation: true,
                                           maintainState: true,
                                           child: TextButton(
                                             onPressed: () {
                                               print("Link pressed");
-                                              _loadExtraDocuments(_documents?[index].name ?? '');
+                                              _loadExtraDocuments(
+                                                  _documents?[index].name ??
+                                                      '');
                                               // launchUrl(Uri.parse(_documents?[
                                               //             index]
                                               //         .path ??
@@ -361,8 +367,7 @@ class _MyOtherPageState extends State<MyOtherPage> {
                                                 textAlign: TextAlign.left,
                                                 // Align text to the left
                                                 style: TextStyle(
-                                                  color:
-                                                      Color(0xFF101C2B),
+                                                  color: Color(0xFF101C2B),
                                                   fontSize: 16,
                                                 ),
                                               ),
@@ -371,18 +376,20 @@ class _MyOtherPageState extends State<MyOtherPage> {
                                         ),
                                         Visibility(
                                           visible:
-                                          _documents?[index].file != '0',
+                                              _documents?[index].file != '0',
                                           maintainSize: true,
                                           maintainAnimation: true,
                                           maintainState: true,
                                           child: ElevatedButton(
                                             onPressed: () {
-                                              _downloadFile(_documents?[index].documentId ?? 0);
+                                              _downloadFile(_documents?[index]
+                                                      .documentId ??
+                                                  0);
                                             },
                                             style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                BorderRadius.circular(40),
+                                                    BorderRadius.circular(40),
                                               ),
                                               primary: const Color(0xFF101C2B),
                                             ),
@@ -391,10 +398,13 @@ class _MyOtherPageState extends State<MyOtherPage> {
                                         ),
                                         const SizedBox(width: 16),
                                         Visibility(
-                                          visible: myUser.getRoles()=="ROLE_ADMIN",
-                                        child: ElevatedButton(
+                                          visible:
+                                              myUser.getRoles() == "ROLE_ADMIN",
+                                          child: ElevatedButton(
                                             onPressed: () {
-                                              _uploadFile(_documents?[index].documentId ?? 0);
+                                              _uploadFile(_documents?[index]
+                                                      .documentId ??
+                                                  0);
                                             },
                                             style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(
@@ -420,7 +430,8 @@ class _MyOtherPageState extends State<MyOtherPage> {
                           // Set padding from content above
                           child: ElevatedButton(
                             onPressed: () {
-                              _loadToDoDocuments(myUser.getUsername(), widget.nameOption);
+                              _loadToDoDocuments(
+                                  myUser.getUsername(), widget.nameOption);
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) => ToDoListPage(

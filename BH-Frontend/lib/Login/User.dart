@@ -1,4 +1,3 @@
-
 class User {
   String token;
   String name;
@@ -14,17 +13,18 @@ class User {
   String roles;
 
   User(
-      {required this.roles, required this.token,
-        required this.name,
-        required this.surname,
-        required this.username,
-        required this.email,
-        required this.password,
-        // ignore: non_constant_identifier_names
-        required this.phone_number,
-        // ignore: non_constant_identifier_names
-        required this.created_at,
-        required this.city});
+      {required this.roles,
+      required this.token,
+      required this.name,
+      required this.surname,
+      required this.username,
+      required this.email,
+      required this.password,
+      // ignore: non_constant_identifier_names
+      required this.phone_number,
+      // ignore: non_constant_identifier_names
+      required this.created_at,
+      required this.city});
 
   String getUsername() {
     return username;
@@ -58,7 +58,7 @@ class User {
     return token;
   }
 
-  String getRoles(){
+  String getRoles() {
     return roles;
   }
 
@@ -70,15 +70,15 @@ class User {
     phone_number = phone;
   }
 
-  void setToken(String token){
+  void setToken(String token) {
     this.token = token;
   }
 
-  void setRole(String roles){
+  void setRole(String roles) {
     this.roles = roles;
   }
 
-  void setPassword(String password){
+  void setPassword(String password) {
     this.password = password;
   }
 }
